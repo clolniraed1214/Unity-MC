@@ -2,3 +2,7 @@ main: tk.redtech.unityMC.UnityMC
 version: 1.0
 name: Unity-MC
 
+commands:
+  gold:
+    description: Add, set, or take away gold coins.
+

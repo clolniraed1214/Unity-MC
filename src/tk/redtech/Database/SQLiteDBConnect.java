@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Database {
+public class SQLiteDBConnect {
 	
 	private Connection conn = null;
 	private Statement stmt = null;
 	private boolean initialized = false;
 	
-	public Database(String name) {
+	public SQLiteDBConnect(String name) {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:" + name);
