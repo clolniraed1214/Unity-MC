@@ -1,7 +1,6 @@
 package tk.redtech.unityMC.event;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,11 +19,16 @@ public class PlayerJoin implements Listener {
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		ResultSet rs = db.query("SELECT gold FROM players WHERE name = '" + event.getPlayer().getName() + "';");
 		try {
-			rs.getInt("gold");
-		} catch (SQLException e) {
-			db.runCommand("INSERT INTO players (name, gold) VALUES ('" + event.getPlayer().getName() + "', 0;");
+			ResultSet rs = db.query("SELECT gold FROM players WHERE name = '" + event.getPlayer().getName() + "';");
+			rs.close();
+			System.out.println(rs.getInt("gold"));
+		} catch (Exception e) {
+			try {
+				db.runCommand("INSERT INTO players (name, gold) VALUES ('" + event.getPlayer().getName() + "', 0);");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	

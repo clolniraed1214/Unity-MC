@@ -7,57 +7,88 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SQLiteDBConnect {
-	
+
 	private Connection conn = null;
-	private Statement stmt = null;
 	private boolean initialized = false;
-	
+	private Statement stmt;
+
 	public SQLiteDBConnect(String name) {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:" + name);
-			stmt = conn.createStatement();
 		} catch (Exception e) {
 			return;
 		}
-		
+
 		initialized = true;
 	}
-	
+
 	public boolean runCommand(String sql) {
 		try {
-			System.out.println("Attempting to run command");
+			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
+			stmt.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
-		return true;		
+		return true;
 	}
-	
+
 	public ResultSet query(String query) {
 		try {
-			System.out.println("Returning Query");
+			this.stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			return rs;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
-	
-	public boolean tableExists(String tableName) {
+
+	public void closeStmt() {
 		try {
-			stmt.executeQuery("SELECT * FROM " + tableName);
-			return true;
-		} catch (Exception e) {
-			return false;
+			this.stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
-	
+
+	public void createTable(String tableName, String args) {
+		boolean existent;
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeQuery("SELECT * FROM " + tableName).close();
+			stmt.close();
+			existent = true;
+		} catch (Exception e) {
+			existent = false;
+		}
+		
+		if (!existent) {
+			try {
+				Statement stmt = conn.createStatement();
+				stmt.executeUpdate("CREATE TABLE " + tableName + " (" + args + ");");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public Connection getConn() {
 		return conn;
 	}
-	
+
 	public boolean getInitialized() {
 		return initialized;
+	}
+
+	public void closeDB() {
+		try {
+			this.conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.initialized = false;
 	}
 }

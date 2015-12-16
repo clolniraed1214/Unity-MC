@@ -15,23 +15,26 @@ public class UnityMC extends JavaPlugin {
 	private final PluginDescriptionFile pdfFile = getDescription();
 	private final Logger logger = getLogger();
 	
-	private SQLiteDBConnect db = new SQLiteDBConnect("test.db");
+	private SQLiteDBConnect db;
 	
 	public void onEnable() {
 		logger.info(pdfFile.getName() + " has been enabled!");
+		
+		registerConfig();
+		this.db = new SQLiteDBConnect("plugins/Unity-MC/database.db");
 		initializeDB();
+		
 		registerCommands();
 		registerEvents();
 	}
 
 	public void onDisable() {
 		logger.info(pdfFile.getName() + " has been disabled!");
+		db.closeDB();
 	}
 	
 	private void initializeDB() {
-		if ( !(db.tableExists("players")) ) {
-			db.runCommand("CREATE TABLE players (name TEXT, gold INTEGER);");
-		}
+		db.createTable("players", "name TEXT, gold INTEGER");
 	}
 	
 	private void registerEvents() {
@@ -41,5 +44,10 @@ public class UnityMC extends JavaPlugin {
 	
 	private void registerCommands() {
 		getCommand("gold").setExecutor(new GoldCoins(db));
+	}
+	
+	private void registerConfig() {
+		getConfig().options().copyDefaults(true);
+		saveConfig();
 	}
 }
