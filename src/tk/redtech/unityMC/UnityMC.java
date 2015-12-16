@@ -19,12 +19,19 @@ public class UnityMC extends JavaPlugin {
 	
 	public void onEnable() {
 		logger.info(pdfFile.getName() + " has been enabled!");
+		initializeDB();
 		registerCommands();
 		registerEvents();
 	}
 
 	public void onDisable() {
 		logger.info(pdfFile.getName() + " has been disabled!");
+	}
+	
+	private void initializeDB() {
+		if ( !(db.tableExists("players")) ) {
+			db.runCommand("CREATE TABLE players (name TEXT, gold INTEGER);");
+		}
 	}
 	
 	private void registerEvents() {
