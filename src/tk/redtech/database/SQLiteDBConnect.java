@@ -1,4 +1,4 @@
-package tk.redtech.Database;
+package tk.redtech.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -9,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import tk.redtech.Database.SQLiteDBConnect;
+import tk.redtech.database.SQLiteDBConnect;
 import tk.redtech.unityMC.functions.PlayerCheck;
 
 public class GoldCoins implements CommandExecutor {
