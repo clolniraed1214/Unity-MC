@@ -18,8 +18,8 @@ public class StoreMenus {
 		Inventory inv = Bukkit.createInventory(null, 9, "Premium Store");
 		ArrayList<String> loreAdd;
 
+		// Additional Home
 		if (MenuSelect.getHouses(player, db) < MenuSelect.housePrices.size()) {
-			// 1 Extra Home
 			loreAdd = EasyItem.getLore(new String[] { "One-Time Pay", ChatColor.GOLD
 					+ String.valueOf(MenuSelect.housePrices.get(MenuSelect.getHouses(player, db))) + " Gold Coins" });
 			inv.setItem(8, EasyItem.item(Material.BED, 1, "Additional Home", loreAdd));
@@ -32,13 +32,16 @@ public class StoreMenus {
 
 		// Access to /workbench
 		loreAdd = EasyItem
-				.getLore(new String[] { "/Workbench Access", "1-Time Pay", ChatColor.GOLD + "10 Gold Coins" });
+				.getLore(new String[] { "/Workbench Access", "1-Time Pay", ChatColor.GOLD + "20 Gold Coins" });
 		inv.setItem(1, EasyItem.item(Material.WORKBENCH, 1, "Portable Workbench", loreAdd));
 
 		// 30 Minutes of Flying
-		loreAdd = EasyItem
-				.getLore(new String[] { "30-Minute time", ChatColor.GOLD + "50 Gold Coins" });
+		loreAdd = EasyItem.getLore(new String[] { "30-Minute Flying Time", ChatColor.GOLD + "50 Gold Coins" });
 		inv.setItem(2, EasyItem.item(Material.FEATHER, 1, "Icarus Wings", loreAdd));
+
+		// NameTag Menu
+		loreAdd = EasyItem.getLore(new String[] { "/Hat access", "1-Time Pay", ChatColor.GOLD + "10 Gold Coins" });
+		inv.setItem(3, EasyItem.item(Material.DIAMOND_HELMET, 1, "Custom Hat", loreAdd));
 
 		player.openInventory(inv);
 	}

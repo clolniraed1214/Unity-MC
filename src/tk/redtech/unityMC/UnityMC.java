@@ -2,6 +2,7 @@ package tk.redtech.unityMC;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +20,7 @@ public class UnityMC extends JavaPlugin {
 	private final PluginDescriptionFile pdfFile = getDescription();
 	private final Logger logger = getLogger();
 	private MenuSelect invClick;
+	private Broadcasts broadcasts = new Broadcasts();
 	
 	private SQLiteDBConnect db;
 	
@@ -32,6 +34,8 @@ public class UnityMC extends JavaPlugin {
 		registerIntances();
 		registerCommands();
 		registerEvents();
+		
+		registerBroadcasts();
 	}
 
 	public void onDisable() {
@@ -40,11 +44,12 @@ public class UnityMC extends JavaPlugin {
 	}
 	
 	private void initializeDB() {
-		db.createTable("players", "name TEXT, gold INTEGER, purchase TEXT, homes INTEGER");
+		db.createTable("players", "name TEXT, gold INTEGER, purchase TEXT, homes INTEGER, fly TEXT");
 	}
 	
 	private void registerIntances() {
 		invClick = new MenuSelect(this.db, this);
+		
 	}
 	
 	private void registerEvents() {
@@ -63,5 +68,14 @@ public class UnityMC extends JavaPlugin {
 	private void registerConfig() {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
+	}
+	
+	private void registerBroadcasts() {
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+			@Override
+			public void run() {
+				Bukkit.broadcastMessage(broadcasts.getMessage());
+			}			
+		}, 12000L, 24000L);
 	}
 }

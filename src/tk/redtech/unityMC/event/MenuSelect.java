@@ -21,7 +21,7 @@ public class MenuSelect implements Listener {
 	private SQLiteDBConnect db;
 	private UnityMC plugin;
 	private Player player;
-	
+
 	public static HashMap<Integer, Integer> housePrices = new HashMap<Integer, Integer>() {
 		private static final long serialVersionUID = 1L;
 
@@ -46,14 +46,14 @@ public class MenuSelect implements Listener {
 			return;
 
 		event.setCancelled(true);
-		
+
 		String itemName = "Blah";
 		try {
 			itemName = event.getCurrentItem().getItemMeta().getDisplayName();
 		} catch (Exception e) {
 			return;
 		}
-		
+
 		Player player = (Player) event.getWhoClicked();
 		player.closeInventory();
 
@@ -65,31 +65,24 @@ public class MenuSelect implements Listener {
 
 	public void recievePurchaseRequest(String name, Player player) {
 		this.player = player;
-		
+
 		switch (name) {
-		case "Portable Enderchest":	attemptPurchase("Portable Enderchest", player, "essentials.enderchest", new String[] {}, 50); break;
-		case "Portable Workbench": attemptPurchase("Portable Workbench", player, "essentials.workbench", new String[] {}, 10); break;
-		case "Additional Home": buyHome(player); break;
-		case "Icarus Wings": 
-			if (attemptPurchase("Icarus' Wings", player, "unity.wings", new String[] {"fly %s"}, 50)) {
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public final Player player = getPlayer();
-					
-					@Override
-					public void run() {
-						player.sendMessage(ChatColor.RED + "Fly ending in 3 Minutes!");
-						Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-							public final String playerName = getPlayer().getName();
-							@Override
-							public void run() {
-								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fly " + playerName);
-								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + playerName + " remove unity.wings");
-							}
-						}, 3600L);
-					}
-				}, 32400L);
-			}
-			break;			
+		case "Portable Enderchest":
+			attemptPurchase("Portable Enderchest", player, "essentials.enderchest", new String[] {}, 50);
+			break;
+		case "Portable Workbench":
+			attemptPurchase("Portable Workbench", player, "essentials.workbench", new String[] {}, 20);
+			break;
+		case "Additional Home":
+			buyHome(player);
+			break;
+		case "Icarus Wings":
+			if (attemptPurchase("Icarus' Wings", player, "unity.wings", new String[] { "fly %s" }, 50))
+				fly();
+			break;
+		case "Custom Hat":
+			attemptPurchase("Custom Hat", player, "essentials.hat", new String[] {}, 10);
+			break;
 		default:
 			player.sendMessage(ChatColor.AQUA + "Item not implemented! Sorry!");
 		}
@@ -113,6 +106,7 @@ public class MenuSelect implements Listener {
 					String.format("pex user %s add " + markerPerm, player.getName()));
 			player.sendMessage(ChatColor.GREEN + "Thank you for purchasing the " + ChatColor.GOLD + purchaseName
 					+ ChatColor.GREEN + "!");
+			Bukkit.getLogger().info(player.getName() + " purchased " + purchaseName);
 		} else {
 			player.sendMessage(ChatColor.RED + "You do not have the money to buy this!\n"
 					+ "Go to our BuyCraft website to buy more!");
@@ -132,13 +126,14 @@ public class MenuSelect implements Listener {
 		String permission = "essentials.sethome.multiple." + (playerHomes + 2) + "homes";
 		boolean incHouses = attemptPurchase("Extra House", player, permission, new String[] {}, price);
 		if (incHouses) {
-			db.runCommand("UPDATE players SET homes = " + (playerHomes + 1) + " WHERE name = '" + player.getName() + "';");
+			db.runCommand(
+					"UPDATE players SET homes = " + (playerHomes + 1) + " WHERE name = '" + player.getName() + "';");
 		}
 	}
-	
+
 	public static int getHouses(Player player, SQLiteDBConnect db) {
 		ResultSet rs = db.query("SELECT homes FROM players WHERE name = '" + player.getName() + "';");
-		
+
 		try {
 			int houses = rs.getInt("homes");
 			rs.close();
@@ -147,11 +142,39 @@ public class MenuSelect implements Listener {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return 0;
 	}
-	
+
 	private Player getPlayer() {
 		return player;
+	}
+
+	private void fly() {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public final Player player = getPlayer();
+
+			@Override
+			public void run() {
+				player.sendMessage(ChatColor.RED + "Fly ending in 3 Minutes!");
+				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+					public final String playerName = player.getName();
+
+					@Override
+					public void run() {
+						if (player.isOnline()) {
+							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fly " + playerName);
+							db.runCommand("UPDATE players SET fly = 'false' WHERE name = '" + playerName + "';");
+						} else {
+							db.runCommand("UPDATE players SET fly = 'offline' WHERE name = '" + playerName + "';");
+						}
+						
+						Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+								"pex user " + playerName + " remove unity.wings");
+
+					}
+				}, 3600L);
+			}
+		}, 32400L);
 	}
 }
