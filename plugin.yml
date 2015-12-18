@@ -5,4 +5,10 @@ name: Unity-MC
 commands:
   gold:
     description: Add, set, or take away gold coins.
+  store:
+    description: Opens the server premium store.
+  confirm:
+    description: Confirms a purchase.
+  inject:
+    description: Not implemented.
 

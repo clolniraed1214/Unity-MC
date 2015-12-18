@@ -22,10 +22,6 @@ public class GoldCoins implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (args.length != 3 && args.length != 0) {
-			properUse(sender);
-			return false;
-		}
 
 		if (args.length == 0) {
 			if (!(PlayerCheck.check(sender)))
@@ -37,8 +33,15 @@ public class GoldCoins implements CommandExecutor {
 		}
 
 		if (sender instanceof Player) {
-			if (!PermCheck.permCheck((Player) sender, "unity.gold.modify")) {
+			if (!PermCheck.permCheck((Player) sender, "unity.gold")) {
 				return false;
+			}
+		}
+		
+		if (args.length == 1) {
+			int gold = getGold(args[0], db);
+			if (gold != -1) {
+				sender.sendMessage(args[0] + " has " + gold + " gold coins.");
 			}
 		}
 
@@ -90,6 +93,13 @@ public class GoldCoins implements CommandExecutor {
 
 	public static void setGold(String playerName, int gold, SQLiteDBConnect db) {
 		db.runCommand("UPDATE players SET gold = " + gold + " WHERE name = '" + playerName + "';");
+	}
+	
+	public static void changeGold(String playerName, int amount, SQLiteDBConnect db) {
+		int gold = getGold(playerName, db);
+		db.closeStmt();
+		gold += amount;
+		setGold(playerName, gold, db);
 	}
 
 }

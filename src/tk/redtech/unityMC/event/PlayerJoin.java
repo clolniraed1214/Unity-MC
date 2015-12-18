@@ -7,13 +7,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import tk.redtech.database.SQLiteDBConnect;
-import tk.redtech.unityMC.UnityMC;
 
 public class PlayerJoin implements Listener {
 	
 	private SQLiteDBConnect db;
 	
-	public PlayerJoin (UnityMC plugin, SQLiteDBConnect db) {
+	public PlayerJoin (SQLiteDBConnect db) {
 		this.db = db;
 	}
 	
@@ -21,11 +20,12 @@ public class PlayerJoin implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		try {
 			ResultSet rs = db.query("SELECT gold FROM players WHERE name = '" + event.getPlayer().getName() + "';");
+			rs.getInt("gold");
 			rs.close();
-			System.out.println(rs.getInt("gold"));
+			db.closeStmt();
 		} catch (Exception e) {
 			try {
-				db.runCommand("INSERT INTO players (name, gold) VALUES ('" + event.getPlayer().getName() + "', 0);");
+				db.runCommand("INSERT INTO players (name, gold, purchase, homes) VALUES ('" + event.getPlayer().getName() + "', 0, 'null',  0);");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
