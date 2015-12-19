@@ -9,17 +9,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import tk.redtech.database.SQLiteDBConnect;
-import tk.redtech.unityMC.event.MenuSelect;
 import tk.redtech.unityMC.functions.PlayerCheck;
+import tk.redtech.unityMC.menu.StoreSelections;
 
 public class ConfirmPurchase implements CommandExecutor {
 	
 	private SQLiteDBConnect db;
-	private MenuSelect invClick;
+	private StoreSelections store;
 	
-	public ConfirmPurchase(SQLiteDBConnect db, MenuSelect invClick) {
+	public ConfirmPurchase(SQLiteDBConnect db, StoreSelections store) {
 		this.db = db;
-		this.invClick = invClick;
+		this.store = store;
 	}
 	
 	@Override
@@ -33,7 +33,8 @@ public class ConfirmPurchase implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "You do not have a pending purchase!");
 				return false;
 			}
-			invClick.recievePurchaseRequest(purchase, player);
+			
+			store.recievePurchaseRequest(purchase, player);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

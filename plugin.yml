@@ -11,4 +11,5 @@ commands:
     description: Confirms a purchase.
   inject:
     description: Not implemented.
-
+  serverad:
+    description: Displays a server ad.

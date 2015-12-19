@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import tk.redtech.database.SQLiteDBConnect;
-import tk.redtech.unityMC.event.MenuSelect;
 import tk.redtech.unityMC.functions.EasyItem;
 
 public class StoreMenus {
@@ -19,9 +18,9 @@ public class StoreMenus {
 		ArrayList<String> loreAdd;
 
 		// Additional Home
-		if (MenuSelect.getHouses(player, db) < MenuSelect.housePrices.size()) {
+		if (StoreSelections.getHouses(player, db) < StoreSelections.housePrices.size()) {
 			loreAdd = EasyItem.getLore(new String[] { "One-Time Pay", ChatColor.GOLD
-					+ String.valueOf(MenuSelect.housePrices.get(MenuSelect.getHouses(player, db))) + " Gold Coins" });
+					+ String.valueOf(StoreSelections.housePrices.get(StoreSelections.getHouses(player, db))) + " Gold Coins" });
 			inv.setItem(8, EasyItem.item(Material.BED, 1, "Additional Home", loreAdd));
 		}
 

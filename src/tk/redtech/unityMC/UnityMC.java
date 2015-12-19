@@ -11,16 +11,17 @@ import tk.redtech.database.SQLiteDBConnect;
 import tk.redtech.unityMC.commands.ConfirmPurchase;
 import tk.redtech.unityMC.commands.GoldCoins;
 import tk.redtech.unityMC.commands.SQLCommand;
+import tk.redtech.unityMC.commands.ServerMessage;
 import tk.redtech.unityMC.commands.Store;
 import tk.redtech.unityMC.event.MenuSelect;
 import tk.redtech.unityMC.event.PlayerJoin;
+import tk.redtech.unityMC.menu.StoreSelections;
 
 public class UnityMC extends JavaPlugin {
 	
 	private final PluginDescriptionFile pdfFile = getDescription();
 	private final Logger logger = getLogger();
-	private MenuSelect invClick;
-	private Broadcasts broadcasts = new Broadcasts();
+	private StoreSelections store;
 	
 	private SQLiteDBConnect db;
 	
@@ -48,21 +49,21 @@ public class UnityMC extends JavaPlugin {
 	}
 	
 	private void registerIntances() {
-		invClick = new MenuSelect(this.db, this);
-		
+		this.store = new StoreSelections(db, this);
 	}
 	
 	private void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerJoin(db), this);
-		pm.registerEvents(invClick, this);
+		pm.registerEvents(new MenuSelect(db), this);
 	}
 	
 	private void registerCommands() {
 		getCommand("gold").setExecutor(new GoldCoins(db));
 		getCommand("store").setExecutor(new Store(db));
-		getCommand("confirm").setExecutor(new ConfirmPurchase(db, invClick));
+		getCommand("confirm").setExecutor(new ConfirmPurchase(db, store));
 		getCommand("inject").setExecutor(new SQLCommand(db));
+		getCommand("serverad").setExecutor(new ServerMessage());
 	}
 	
 	private void registerConfig() {
@@ -74,8 +75,8 @@ public class UnityMC extends JavaPlugin {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			@Override
 			public void run() {
-				Bukkit.broadcastMessage(broadcasts.getMessage());
+				Bukkit.broadcastMessage(Broadcasts.getMessage());
 			}			
-		}, 12000L, 24000L);
+		}, 18000L, 24000L);
 	}
 }
