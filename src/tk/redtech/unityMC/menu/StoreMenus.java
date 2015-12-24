@@ -30,18 +30,25 @@ public class StoreMenus {
 		inv.setItem(0, EasyItem.item(Material.ENDER_CHEST, 1, "Portable Enderchest", loreAdd));
 
 		// Access to /workbench
-		loreAdd = EasyItem
-				.getLore(new String[] { "/Workbench Access", "1-Time Pay", ChatColor.GOLD + "20 Gold Coins" });
+		loreAdd = EasyItem.getLore(new String[] { "/Workbench Access", "1-Time Pay", ChatColor.GOLD + "20 Gold Coins" });
 		inv.setItem(1, EasyItem.item(Material.WORKBENCH, 1, "Portable Workbench", loreAdd));
 
 		// 30 Minutes of Flying
 		loreAdd = EasyItem.getLore(new String[] { "30-Minute Flying Time", ChatColor.GOLD + "50 Gold Coins" });
 		inv.setItem(2, EasyItem.item(Material.FEATHER, 1, "Icarus Wings", loreAdd));
 
-		// NameTag Menu
+		// Access to /hat
 		loreAdd = EasyItem.getLore(new String[] { "/Hat access", "1-Time Pay", ChatColor.GOLD + "10 Gold Coins" });
 		inv.setItem(3, EasyItem.item(Material.DIAMOND_HELMET, 1, "Custom Hat", loreAdd));
 
+		// Item Repair
+		loreAdd = EasyItem.getLore(new String[] {"Repairs current item in hand", "Pay per use", ChatColor.GOLD + "15 Gold Coins"});
+		inv.setItem(4, EasyItem.item(Material.ANVIL, 1, "Item Repair", loreAdd));
+		
+		// Access to /top
+		loreAdd = EasyItem.getLore(new String[] {"Grants access to /top", "1-Time Tay", ChatColor.GOLD + "30 Gold Coins"});
+		inv.setItem(5, EasyItem.item(Material.GRASS, 1, "Angel Trip", loreAdd));
+		
 		player.openInventory(inv);
 	}
 }

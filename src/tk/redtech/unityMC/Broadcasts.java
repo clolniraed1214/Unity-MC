@@ -16,7 +16,11 @@ public class Broadcasts {
 		this.add(ChatColor.BLUE + "Support our server by donating\n"
 				+ "in the /buy menu!");
 		this.add(ChatColor.BLUE + "Want to fly? Want a custom hat?\n"
-				+ "If so, visit our store with /store!");}};
+				+ "If so, visit our store with /store!");
+		this.add(ChatColor.BLUE + "Invite your friends! The thing that\n"
+				+ "truly makes this fun is many people!");
+	}};
+	
 	
 	public static String getMessage() {
 		int random = (int) Math.floor(Math.random() * messages.size());

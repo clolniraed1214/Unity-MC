@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tk.redtech.database.SQLiteDBConnect;
 import tk.redtech.unityMC.commands.ConfirmPurchase;
 import tk.redtech.unityMC.commands.GoldCoins;
+import tk.redtech.unityMC.commands.RepairItem;
 import tk.redtech.unityMC.commands.SQLCommand;
 import tk.redtech.unityMC.commands.ServerMessage;
 import tk.redtech.unityMC.commands.Store;
@@ -64,6 +65,7 @@ public class UnityMC extends JavaPlugin {
 		getCommand("confirm").setExecutor(new ConfirmPurchase(db, store));
 		getCommand("inject").setExecutor(new SQLCommand(db));
 		getCommand("serverad").setExecutor(new ServerMessage());
+		getCommand("repairitem").setExecutor(new RepairItem());
 	}
 	
 	private void registerConfig() {

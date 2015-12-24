@@ -51,10 +51,16 @@ public class StoreSelections {
 			break;
 		case "Icarus Wings":
 			if (attemptPurchase("Icarus' Wings", player, "unity.wings", new String[] { "fly %s" }, 50))
-				fly();
+				buyFly();
 			break;
 		case "Custom Hat":
 			attemptPurchase("Custom Hat", player, "essentials.hat", new String[] {}, 10);
+			break;
+		case "Repair Item":
+			attemptPurchase("Repair Item", player, "null", new String[] {"repairitem %s"}, 15);
+			break;
+		case "Angel Trip":
+			attemptPurchase("Angel Trip", player, "essentials.top", new String[] {}, 30);
 			break;
 		default:
 			player.sendMessage(ChatColor.AQUA + "Item not implemented! Sorry!");
@@ -123,7 +129,7 @@ public class StoreSelections {
 		return player;
 	}
 
-	private void fly() {
+	private void buyFly() {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public final Player player = getPlayer();
 
