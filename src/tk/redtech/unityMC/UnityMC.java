@@ -14,8 +14,8 @@ import tk.redtech.unityMC.commands.RepairItem;
 import tk.redtech.unityMC.commands.SQLCommand;
 import tk.redtech.unityMC.commands.ServerMessage;
 import tk.redtech.unityMC.commands.Store;
-import tk.redtech.unityMC.event.MenuSelect;
-import tk.redtech.unityMC.event.PlayerJoin;
+import tk.redtech.unityMC.event.player.MenuSelect;
+import tk.redtech.unityMC.event.player.PlayerJoin;
 import tk.redtech.unityMC.menu.StoreSelections;
 
 public class UnityMC extends JavaPlugin {

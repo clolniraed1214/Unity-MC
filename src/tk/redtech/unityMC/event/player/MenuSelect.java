@@ -1,4 +1,4 @@
-package tk.redtech.unityMC.event;
+package tk.redtech.unityMC.event.player;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

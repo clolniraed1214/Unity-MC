@@ -1,4 +1,4 @@
-package tk.redtech.unityMC.event;
+package tk.redtech.unityMC.event.player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
